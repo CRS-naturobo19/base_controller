@@ -144,12 +144,11 @@ void BaseController::TimerCallback(const ros::TimerEvent& event)
 
 void BaseController::CalcWheelSpeed(double actualDt){
 	double t[4];
-
-	t[0] = -((targetVelX * (-1) 　　　　　　　)	   + (targetVelY * (-1)　　　　　　　 )　　　 + (targetRotZ * RobotRadius)) / wheel_radius;
-	t[1] = -((targetVelX * 1                )	+ (targetVelY * (-1)             )      + (targetRotZ * RobotRadius)) / wheel_radius;
-	t[2] = -((targetVelX * 1                )	+ (targetVelY * 1                ) 	+ (targetRotZ * RobotRadius)) / wheel_radius;
-	t[3] = -((targetVelX * (-1)             )	+ (targetVelY * 1                ) 	+ (targetRotZ * RobotRadius)) / wheel_radius;
-	double _k = 1.0;
+	
+        t[0] = -((targetVelX * (-1)) + (targetVelY * (-1)) + (targetRotZ * RobotRadius)) / wheel_radius;
+        t[1] = -((targetVelX * 1   ) + (targetVelY * (-1)) + (targetRotZ * RobotRadius)) / wheel_radius;
+        t[2] = -((targetVelX * 1   ) + (targetVelY * 1   ) + (targetRotZ * RobotRadius)) / wheel_radius;
+        t[3] = -((targetVelX * (-1)) + (targetVelY * 1   ) + (targetRotZ * RobotRadius)) / wheel_radius;
 
 	if(this->LimitVelocity){
 		for(int i = 0; i < 4; i++){
