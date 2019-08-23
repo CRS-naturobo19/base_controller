@@ -149,6 +149,8 @@ void BaseController::CalcWheelSpeed(double actualDt){
         t[1] = -((targetVelX * 1   ) + (targetVelY * (-1)) + (targetRotZ * RobotRadius)) / wheel_radius;
         t[2] = -((targetVelX * 1   ) + (targetVelY * 1   ) + (targetRotZ * RobotRadius)) / wheel_radius;
         t[3] = -((targetVelX * (-1)) + (targetVelY * 1   ) + (targetRotZ * RobotRadius)) / wheel_radius;
+	
+	double _k = 1.0;
 
 	if(this->LimitVelocity){
 		for(int i = 0; i < 4; i++){
