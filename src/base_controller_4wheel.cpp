@@ -67,7 +67,7 @@ BaseController::BaseController(void)
 
 	_nh.param("motor_max_acc", this->MaximumAcceleration, 0.0);
 	_nh.param("motor_max_vel", this->MaximumVelocity, 0.0);
-	_nh.param("robot_radius", this->RobotRadius, 0.258);
+	_nh.param("robot_radius", this->RobotRadius, 0.270);
 	_nh.param("wheel_radius", this->wheel_radius, 0.0500);
 
 	ROS_INFO("motor_max_acc : %f", this->MaximumAcceleration);
