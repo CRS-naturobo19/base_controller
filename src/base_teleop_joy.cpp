@@ -90,7 +90,7 @@ BaseTeleop::BaseTeleop()
     nh_.getParam("AxisRightStickY", AxisRightStickY);
     nh_.getParam("AxisJuziX", AxisJuziX);
     nh_.getParam("AxisJuziY", AxisJuziY);
-    nh_.getParam("ButtonRB", ButtonRB);
+    nh_.getParam("Button1", Button1);
 
     auto _nh = ros::NodeHandle("~");
 
@@ -103,3 +103,53 @@ BaseTeleop::BaseTeleop()
     ROS_INFO("max_lin_turbo: %lf", this->max_lin_turbo);
     ROS_INFO("max_ang: %lf", this->max_ang);
     ROS_INFO("max_ang_turbo: %lf", this->max_ang_turbo);
+}
+
+void BaseTeleop::joyCallback(const sensor_msgs::Joy::ConstPtr& joy)
+{
+    geometry_msgs::Twist twist;
+
+    // double vel_x = joy->axes[AxisLeftThumbY];
+    // double vel_y = joy->axes[AxisLeftThumbX];
+    // double vel_z = joy->axes[AxisRightThumbX];
+
+    double vel_x = joy->axes[AxisRightStickY];
+    double vel_y = joy->axes[AxisLeftTStickX];
+    double vel_z = joy->axes[AxisJuziX];
+
+    double vel_norm = hypot(vel_x, vel_y);
+    if (vel_norm > 1.0)
+    {
+        vel_x /= vel_norm;
+        vel_y /= vel_norm;
+    }
+
+    if (joy->buttons[ButtonRB] != 0)
+    {
+        vel_x *= this->max_lin_turbo;
+        vel_y *= this->max_lin_turbo;
+        vel_z *= this->max_ang_turbo;
+    }
+    else
+    {
+        vel_x *= this->max_lin;
+        vel_y *= this->max_lin;
+        vel_z *= this->max_ang;
+    }
+
+    twist.linear.x = vel_x;
+    twist.linear.y = vel_y;
+    twist.angular.z = vel_z;
+
+    vel_pub_.publish(twist);
+}
+
+int main(int argc, char** argv)
+{
+    ros::init(argc, argv, "base_teleop_joy");
+
+    BaseTeleop baseTeleop;
+
+    ros::spin();
+}
+
