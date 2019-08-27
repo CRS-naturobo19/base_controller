@@ -90,7 +90,6 @@ BaseTeleop::BaseTeleop()
     nh_.getParam("AxisRightStickY", AxisRightStickY);
     nh_.getParam("AxisJuziX", AxisJuziX);
     nh_.getParam("AxisJuziY", AxisJuziY);
-    nh_.getParam("Button1", Button1);
 
     auto _nh = ros::NodeHandle("~");
 
@@ -114,7 +113,7 @@ void BaseTeleop::joyCallback(const sensor_msgs::Joy::ConstPtr& joy)
     // double vel_z = joy->axes[AxisRightThumbX];
 
     double vel_x = joy->axes[AxisRightStickY];
-    double vel_y = joy->axes[AxisLeftTStickX];
+    double vel_y = joy->axes[AxisLeftStickX];
     double vel_z = joy->axes[AxisJuziX];
 
     double vel_norm = hypot(vel_x, vel_y);
@@ -124,18 +123,11 @@ void BaseTeleop::joyCallback(const sensor_msgs::Joy::ConstPtr& joy)
         vel_y /= vel_norm;
     }
 
-    if (joy->buttons[ButtonRB] != 0)
-    {
-        vel_x *= this->max_lin_turbo;
-        vel_y *= this->max_lin_turbo;
-        vel_z *= this->max_ang_turbo;
-    }
-    else
-    {
+
         vel_x *= this->max_lin;
         vel_y *= this->max_lin;
         vel_z *= this->max_ang;
-    }
+
 
     twist.linear.x = vel_x;
     twist.linear.y = vel_y;
